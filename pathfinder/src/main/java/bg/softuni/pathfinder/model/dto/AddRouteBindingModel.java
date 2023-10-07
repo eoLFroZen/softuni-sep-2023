@@ -1,5 +1,6 @@
 package bg.softuni.pathfinder.model.dto;
 
+import bg.softuni.pathfinder.model.User;
 import bg.softuni.pathfinder.model.enums.CategoryNames;
 import bg.softuni.pathfinder.model.enums.Level;
 
@@ -11,46 +12,77 @@ public class AddRouteBindingModel {
     private String description;
     private Level level;
     private String videoUrl;
-
+    private User author;
     private Set<CategoryNames> categories;
 
-    public String getName() {
+    public AddRouteBindingModel () {
+
+    }
+
+    public User getAuthor () {
+
+        return author;
+    }
+
+    public AddRouteBindingModel setAuthor (User author) {
+
+        this.author = author;
+        return this;
+    }
+
+    public String getName () {
+
         return name;
     }
 
-    public void setName(String name) {
+    public AddRouteBindingModel setName (String name) {
+
         this.name = name;
+        return this;
     }
 
-    public String getDescription() {
+    public String getDescription () {
+
         return description;
     }
 
-    public void setDescription(String description) {
+    public AddRouteBindingModel setDescription (String description) {
+
         this.description = description;
+        return this;
     }
 
-    public Level getLevel() {
+    public Level getLevel () {
+
         return level;
     }
 
-    public void setLevel(Level level) {
+    public AddRouteBindingModel setLevel (Level level) {
+
         this.level = level;
+        return this;
     }
 
-    public String getVideoUrl() {
+    public String getVideoUrl () {
+
         return videoUrl;
     }
 
-    public void setVideoUrl(String videoUrl) {
+    public AddRouteBindingModel setVideoUrl (String videoUrl) {
+
         this.videoUrl = videoUrl;
+        return this;
     }
 
-    public Set<CategoryNames> getCategories() {
+    public Set<CategoryNames> getCategories () {
+
         return categories;
     }
 
-    public void setCategories(Set<CategoryNames> categories) {
+    public AddRouteBindingModel setCategories (Set<CategoryNames> categories) {
+
         this.categories = categories;
+        return this;
     }
+
 }
