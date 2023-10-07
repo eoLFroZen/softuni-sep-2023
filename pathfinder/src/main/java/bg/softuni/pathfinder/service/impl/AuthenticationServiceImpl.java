@@ -29,7 +29,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public void register(UserRegisterBindingModel userRegisterBindingModel) {
         User user = modelMapper.map(userRegisterBindingModel, User.class);
-        user.setPassword(passwordEncoder.encode(userRegisterBindingModel.getPassword()));
         userRepository.save(user);
     }
 

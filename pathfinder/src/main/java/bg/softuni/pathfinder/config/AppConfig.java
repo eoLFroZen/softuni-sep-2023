@@ -4,10 +4,16 @@ import bg.softuni.pathfinder.model.Category;
 import bg.softuni.pathfinder.model.Route;
 import bg.softuni.pathfinder.model.User;
 import bg.softuni.pathfinder.model.dto.AddRouteBindingModel;
+import bg.softuni.pathfinder.model.dto.UserRegisterBindingModel;
 import bg.softuni.pathfinder.model.enums.CategoryNames;
+import bg.softuni.pathfinder.model.enums.Level;
 import bg.softuni.pathfinder.service.CategoryService;
+import bg.softuni.pathfinder.service.RoleService;
 import bg.softuni.pathfinder.service.UserService;
-import org.modelmapper.*;
+import org.modelmapper.Conditions;
+import org.modelmapper.Converter;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.Provider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,42 +26,63 @@ public class AppConfig {
 
     private final CategoryService categoryService;
     private final UserService userService;
+    private final RoleService roleService;
 
     public AppConfig (CategoryService categoryService,
-                      UserService userService) {
+                      UserService userService,
+                      RoleService roleService) {
 
         this.categoryService = categoryService;
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @Bean
-    public ModelMapper modelMapper() {
+    public ModelMapper modelMapper () {
 
         final ModelMapper modelMapper = new ModelMapper();
-        final TypeMap<AddRouteBindingModel, Route> typeMap
-                = modelMapper.createTypeMap(AddRouteBindingModel.class, Route.class);
 
-        Provider<User> userProvider = req -> userService.getLoggedUser();
+        //AddRouteBindingModel -> Route
+        Provider<User> loggedUserProvider = req -> userService.getLoggedUser();
 
         Converter<Set<CategoryNames>, Set<Category>> toEntitySet
                 = ctx -> (ctx.getSource() == null)
                          ? null
                          : categoryService.getAllByNameIn(ctx.getSource());
 
-        typeMap
+        modelMapper
+                .createTypeMap(AddRouteBindingModel.class, Route.class)
                 .addMappings(mapper -> mapper
                         .using(toEntitySet)
-                        .map(AddRouteBindingModel::getCategories, Route::setCategories))
+                            .map(AddRouteBindingModel::getCategories, Route::setCategories))
                 .addMappings(mapper -> mapper
                         .when(Conditions.isNull())
-                        .with(userProvider)
-                        .map(AddRouteBindingModel::getAuthor, Route::setAuthor));
+                            .with(loggedUserProvider)
+                                .map(AddRouteBindingModel::getAuthor, Route::setAuthor));
+
+        //UserRegisterBindingModel -> User
+        Provider<User> newUserProvider = req -> new User()
+                .setRoles(Set.of(roleService.getRoleByName("USER")))
+                .setLevel(Level.BEGINNER);
+
+        Converter<String, String> passwordConverter
+                = ctx -> (ctx.getSource() == null)
+                         ? null
+                         : passwordEncoder().encode(ctx.getSource());
+
+        modelMapper
+                .createTypeMap(UserRegisterBindingModel.class, User.class)
+                .setProvider(newUserProvider)
+                .addMappings(mapper -> mapper
+                        .using(passwordConverter)
+                            .map(UserRegisterBindingModel::getPassword, User::setPassword));
 
         return modelMapper;
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder () {
+
         return new BCryptPasswordEncoder();
     }
 }
