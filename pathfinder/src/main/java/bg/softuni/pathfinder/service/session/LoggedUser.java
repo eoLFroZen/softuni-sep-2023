@@ -1,53 +1,68 @@
 package bg.softuni.pathfinder.service.session;
 
+import bg.softuni.pathfinder.model.Role;
+import bg.softuni.pathfinder.model.enums.UserRoles;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class LoggedUser {
 
     private String username;
-    private String email;
-    private String fullName;
-
+    private Set<Role> roles;
     private boolean isLogged;
 
+    public LoggedUser () {
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public boolean isLogged() {
-        return isLogged;
-    }
-
-    public void setLogged(boolean logged) {
-        isLogged = logged;
+        this.roles = new HashSet<>();
     }
 
     public void reset() {
-        setUsername(null);
-        setEmail(null);
-        setFullName(null);
-        setLogged(false);
+        this
+                .setUsername(null)
+                .setRoles(Collections.emptySet())
+                .setLogged(false);
+    }
+
+    public String getUsername () {
+
+        return username;
+    }
+
+    public LoggedUser setUsername (String username) {
+
+        this.username = username;
+        return this;
+    }
+
+    public Set<Role> getRoles () {
+
+        return roles;
+    }
+
+    public LoggedUser setRoles (Set<Role> roles) {
+
+        this.roles = roles;
+        return this;
+    }
+
+    public boolean isLogged () {
+
+        return isLogged;
+    }
+
+    public LoggedUser setLogged (boolean logged) {
+
+        isLogged = logged;
+        return this;
+    }
+
+    public boolean isAdmin () {
+
+        return this.roles.stream()
+                .anyMatch(role -> role.getName().equals(UserRoles.ADMIN));
     }
 }

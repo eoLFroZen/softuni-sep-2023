@@ -1,5 +1,6 @@
 package bg.softuni.pathfinder.service.impl;
 
+import bg.softuni.pathfinder.exceptions.LoginCredentialsException;
 import bg.softuni.pathfinder.model.User;
 import bg.softuni.pathfinder.repository.UserRepository;
 import bg.softuni.pathfinder.service.UserService;
@@ -18,6 +19,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getLoggedUser() {
-        return userRepository.findByUsername(loggedUser.getUsername());
+
+        final String username = loggedUser.getUsername();
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new LoginCredentialsException("User with username: " + username + " is not present"));
     }
 }

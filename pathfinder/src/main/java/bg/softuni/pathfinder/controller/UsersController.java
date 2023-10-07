@@ -1,10 +1,12 @@
 package bg.softuni.pathfinder.controller;
 
 
+import bg.softuni.pathfinder.exceptions.LoginCredentialsException;
 import bg.softuni.pathfinder.model.dto.UserLoginBindingModel;
 import bg.softuni.pathfinder.model.dto.UserRegisterBindingModel;
 import bg.softuni.pathfinder.service.AuthenticationService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,12 +29,15 @@ public class UsersController {
 
     @PostMapping("/login")
     public ModelAndView login(UserLoginBindingModel userLoginBindingModel) {
-        boolean isLogged = authenticationService.login(userLoginBindingModel);
 
-        if (isLogged) {
-            return new ModelAndView("redirect:/");
-        }
+        authenticationService.login(userLoginBindingModel);
+        return new ModelAndView("redirect:/");
+    }
 
+    @ExceptionHandler(LoginCredentialsException.class)
+    public ModelAndView handleLoginCredentialsError(LoginCredentialsException e) {
+
+        System.out.println(e.getMessage());
         return new ModelAndView("login");
     }
 
@@ -49,7 +54,7 @@ public class UsersController {
     }
 
     // TODO change to POST
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public ModelAndView logout() {
         this.authenticationService.logout();
 
