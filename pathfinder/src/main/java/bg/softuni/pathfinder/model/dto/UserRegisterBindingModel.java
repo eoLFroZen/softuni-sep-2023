@@ -1,12 +1,34 @@
 package bg.softuni.pathfinder.model.dto;
 
+import bg.softuni.pathfinder.validation.anotations.PasswordMatch;
+import bg.softuni.pathfinder.validation.anotations.UniqueUsername;
+import jakarta.validation.constraints.*;
+
+@PasswordMatch
 public class UserRegisterBindingModel {
+
+    @UniqueUsername
+    @Size(min = 2, message = "{user.username.length}")
     private String username;
+
+    @Size(min = 2, message = "{user.full-name.length}")
     private String fullName;
+
+    @Email(regexp = ".+[@].+", message = "{user.email}")
     private String email;
+
+    @Positive(message = "{user.age}")
     private int age;
+
+    @Size(min = 2, message = "{user.password.length}")
     private String password;
+
+    @Size(min = 2, message = "{user.confirm-password.length}")
     private String confirmPassword;
+
+    public UserRegisterBindingModel () {
+
+    }
 
     public String getUsername() {
         return username;
