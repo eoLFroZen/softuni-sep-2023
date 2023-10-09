@@ -35,10 +35,10 @@ public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch
                         context.unwrap(HibernateConstraintValidatorContext.class);
 
                 hibernateContext
-                        .disableDefaultConstraintViolation();
-                hibernateContext
                         .buildConstraintViolationWithTemplate(message)
-                        .addConstraintViolation();
+                        .addPropertyNode("confirmPassword")
+                        .addConstraintViolation()
+                        .disableDefaultConstraintViolation();
             }
 
             return passwordMatch;

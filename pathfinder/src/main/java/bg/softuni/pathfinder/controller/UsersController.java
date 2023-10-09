@@ -9,13 +9,9 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Arrays;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/users")
@@ -66,12 +62,11 @@ public class UsersController {
 
         final ModelAndView modelAndView = new ModelAndView();
 
-        checkPasswordMatch(bindingResult);
-
         if (bindingResult.hasErrors()) {
+            final String attributeName = "userRegisterBindingModel";
             redirectAttributes
-                    .addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel)
-                    .addFlashAttribute(BINDING_RESULT_PATH + DOT + "userRegisterBindingModel",
+                    .addFlashAttribute(attributeName, userRegisterBindingModel)
+                    .addFlashAttribute(BINDING_RESULT_PATH + DOT + attributeName,
                                        bindingResult);
             modelAndView.setViewName("redirect:register");
 
@@ -82,19 +77,6 @@ public class UsersController {
         }
 
         return modelAndView;
-    }
-
-    private static void checkPasswordMatch (BindingResult bindingResult) {
-
-        bindingResult.getGlobalErrors().stream()
-                .filter(err -> Arrays.stream(Objects.requireNonNull(err.getCodes())).toList().contains("PasswordMatch"))
-                .findAny()
-                .ifPresent((globalError) -> {
-                    final FieldError confirmPasswordError = new FieldError(globalError.getObjectName(),
-                                                                 "confirmPassword",
-                                                                 Objects.requireNonNull(globalError.getDefaultMessage()));
-                    bindingResult.addError(confirmPasswordError);
-                } );
     }
 
     @PostMapping("/logout")
