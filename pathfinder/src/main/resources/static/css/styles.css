@@ -21,6 +21,10 @@ body {
     background-attachment: fixed;
     margin: 30px 50px;
     line-height: 1.4;
+
+    min-height: calc(100vh - 4rem);
+    display: flex;
+    flex-direction: column
 }
 
 .btn {
@@ -201,7 +205,7 @@ img {
 
 /* Footer */
 footer {
-    margin-top: 2rem;
+    margin-top: auto;
     background: var(--dark);
     color: var(--light);
     text-align: center;
