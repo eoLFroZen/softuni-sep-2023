@@ -1,6 +1,5 @@
 package bg.softuni.pathfinder.controller;
 
-
 import bg.softuni.pathfinder.exceptions.LoginCredentialsException;
 import bg.softuni.pathfinder.model.dto.UserLoginBindingModel;
 import bg.softuni.pathfinder.model.dto.UserRegisterBindingModel;
@@ -27,6 +26,7 @@ public class UsersController {
 
     @GetMapping("/login")
     public ModelAndView login() {
+
         return new ModelAndView("login");
     }
 
@@ -38,10 +38,12 @@ public class UsersController {
     }
 
     @ExceptionHandler(LoginCredentialsException.class)
-    public ModelAndView handleLoginCredentialsError(LoginCredentialsException e) {
+    public ModelAndView handleLoginCredentialsError(LoginCredentialsException e,
+                                                    RedirectAttributes redirectAttributes) {
 
+        redirectAttributes.addFlashAttribute("badCredentials", true);
         System.out.println(e.getMessage());
-        return new ModelAndView("login");
+        return new ModelAndView("redirect:login");
     }
 
     @GetMapping("/register")
@@ -55,8 +57,7 @@ public class UsersController {
     }
 
     @PostMapping("/register")
-    public ModelAndView register(@Valid @ModelAttribute("userRegisterBindingModel")
-                                     UserRegisterBindingModel userRegisterBindingModel,
+    public ModelAndView register(@Valid UserRegisterBindingModel userRegisterBindingModel,
                                  BindingResult bindingResult,
                                  RedirectAttributes redirectAttributes) {
 
@@ -66,8 +67,7 @@ public class UsersController {
             final String attributeName = "userRegisterBindingModel";
             redirectAttributes
                     .addFlashAttribute(attributeName, userRegisterBindingModel)
-                    .addFlashAttribute(BINDING_RESULT_PATH + DOT + attributeName,
-                                       bindingResult);
+                    .addFlashAttribute(BINDING_RESULT_PATH + DOT + attributeName, bindingResult);
             modelAndView.setViewName("redirect:register");
 
         } else {

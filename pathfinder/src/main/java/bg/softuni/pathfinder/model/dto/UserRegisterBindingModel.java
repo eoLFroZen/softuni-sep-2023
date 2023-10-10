@@ -1,5 +1,6 @@
 package bg.softuni.pathfinder.model.dto;
 
+import bg.softuni.pathfinder.validation.anotations.UniqueEmail;
 import bg.softuni.pathfinder.validation.anotations.PasswordMatch;
 import bg.softuni.pathfinder.validation.anotations.UniqueUsername;
 import jakarta.validation.constraints.*;
@@ -7,13 +8,17 @@ import jakarta.validation.constraints.*;
 @PasswordMatch
 public class UserRegisterBindingModel {
 
+    @NotNull
     @UniqueUsername
     @Size(min = 2, message = "{user.username.length}")
     private String username;
 
+    @NotNull
     @Size(min = 2, message = "{user.full-name.length}")
     private String fullName;
 
+    @NotNull
+    @UniqueEmail
     @Email(regexp = ".+[@].+", message = "{user.email}")
     private String email;
 

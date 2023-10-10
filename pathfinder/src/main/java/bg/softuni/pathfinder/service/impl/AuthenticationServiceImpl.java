@@ -39,7 +39,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         User user = this.userRepository
                 .findByUsername(username)
-                .orElseThrow(() -> new LoginCredentialsException("User with username: " + username + " is not present"));
+                .orElseThrow(() -> new LoginCredentialsException("User with username: [" + username + "] is not present"));
 
         boolean passwordMatch = passwordEncoder.matches(userLoginBindingModel.getPassword(),
                                                         user.getPassword());

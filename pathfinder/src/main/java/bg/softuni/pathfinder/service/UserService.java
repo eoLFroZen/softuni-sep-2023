@@ -6,4 +6,6 @@ public interface UserService {
     User getLoggedUser();
 
     boolean isUniqueUsername (String value);
+
+    boolean isUniqueEmail (String value);
 }

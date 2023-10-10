@@ -30,4 +30,10 @@ public class UserServiceImpl implements UserService {
 
         return this.userRepository.findByUsername(username).isEmpty();
     }
+
+    @Override
+    public boolean isUniqueEmail (String email) {
+
+        return this.userRepository.findByEmail(email).isEmpty();
+    }
 }
