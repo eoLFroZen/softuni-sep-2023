@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/commons::head"></head>
+<body>
+<header th:replace="fragments/commons::nav"></header>
+<main>
+    <div class="container bg-blur rounded mt-1 mb-4">
+        <div class="row mt-1 mb-2">
+            <div class="col-6 mt-1 mb-1">
+                <div>
+                    <h3 class="mySticky bg-gray text-dark  mb-0 mt-2">My Offers</h3>
+                    <h6 class="mySticky bg-gray text-dark  mb-0 mt-0" th:text="'Username: ' + ${@loggedUser.username}"></h6>
+                    <div class="bg-dark rounded m-auto" style="height: 31vh; overflow: auto">
+                        <table class="table table-striped table-dark">
+                            <tr th:each="myOffer : ${offerHomeDTO.myOffers}">
+                                <td class="bg-info" scope="row" style="width: 5%">
+                                    <img class="mr-2 " src="/img/etiquette.png" alt="Etiquette" width="35px"
+                                         height="35px">
+                                </td>
+                                <td style="width: 5%" class="bg-info" th:text="${myOffer.condition}">{condition}</td>
+                                <td class="bg-primary" style="width: 15%" th:text="${myOffer.price}">{price} €</td>
+                                <td th:text="${myOffer.description}">{description}</td>
+                                <td style="width: 15%"><a class="btn-danger btn" th:href="@{/offers/remove/{id}(id=${myOffer.id})}">Remove</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="mySticky bg-gray text-dark  mb-0 mt-2">Bought Items</h3>
+                    <div class="bg-dark rounded m-auto" style="height: 31vh; overflow: auto">
+                        <table class="table table-striped table-dark">
+                            <tr th:each="boughtOffer : ${offerHomeDTO.boughtOffers}">
+                                <td class="bg-info" scope="row" style="width: 5%">
+                                    <img class="mr-2 " src="/img/etiquette.png" alt="Etiquette" width="35px"
+                                         height="35px">
+                                </td>
+                                <td style="width: 5%" class="bg-info">
+                                    <a th:text="${boughtOffer.description}">{itemDescritpion}</a>
+                                </td>
+                                <td class="bg-primary" style="width: 15%">
+                                    <a th:text="${boughtOffer.price}">{itemPrice} €</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 mt-1 mb-1">
+                <h3 class="mySticky bg-gray text-dark  mb-0 mt-2">All Other Offers</h3>
+                <h6 class="mySticky bg-gray text-dark  mb-0 mt-0" th:text="${offerHomeDTO.totalOtherOffers} + ' Offers'">{totalOffers}</h6>
+                <div class="bg-dark rounded m-auto" style="height: 67vh; overflow: auto">
+                    <div>
+                        <div>
+                            <br>
+                            <ul th:each="otherOffer : ${offerHomeDTO.allOtherOffers}" class="list-group list-group-horizontal text-dark">
+                                <li class="list-group-item">
+                                    <table>
+                                        <tr>
+                                            <td style="width: 35%">
+                                                <a th:text="${otherOffer.sellerUsername}">{sellersUsername} sells:</a>
+                                            </td>
+                                            <td>
+                                                <a th:text="${otherOffer.description}">{offerDescription}</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </li>
+                                <li class="list-group-item bg-gray">
+                                    <table>
+                                        <tr>
+                                            <td style="width: 40%">
+                                                <a th:text="${otherOffer.condition}">Condition: {offerCondition}</a>
+                                            </td>
+                                            <td class="text-primary" style="width: 40%">
+                                                <a th:text="${otherOffer.price}">Price: {offerPrice} €</a>
+                                            </td>
+                                            <td>
+                                                <form th:action="@{/offers/buy/{id}(id=${otherOffer.id})}" th:method="POST">
+                                                    <button type="submit" class="ml-3 text-danger">
+                                                        <img src="/img/buy.png" height="35px"></button>
+                                                </form>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="fragments/commons::footer"></footer>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/commons::head"></head>
+<body>
+<header th:replace="fragments/commons::nav"></header>
+<main>
+    <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Register</span></h1>
+    <hr class="hr-3 w-25 bg-white"/>
+
+    <form class="mx-auto w-25 bg-blur rounded" th:method="POST" th:action="@{/register}">
+
+        <div class="form-group">
+            <div class="label-holder textCol d-flex justify-content-center">
+                <label for="username" class="h4 mb-2 text-white">Username</label>
+            </div>
+
+            <!--        Example: Render errors messages with th:errorclass "is-invalid" and class "invalid-feedback" - you can make it differently. -->
+            <!--        <input th:field="*{username}" th:errorclass="'is-invalid alert-danger'" type="text" class="form-control"-->
+            <!--               id="username" name="username"/>-->
+            <!--        <small class="invalid-feedback text-danger">Username error message</small>-->
+
+            <input type="text" class="form-control" id="username" name="username"/>
+            <small class="text-danger">Username error message</small>
+        </div>
+
+        <div class="form-group">
+            <div class="label-holder text-white textCol d-flex justify-content-center">
+                <label for="email" class="h4 mb-2">Email</label>
+            </div>
+            <input type="email" class="form-control" id="email" name="email"/>
+            <small class="text-danger">Email error message</small>
+        </div>
+
+        <div class="form-group">
+            <div class="label-holder text-white textCol d-flex justify-content-center">
+                <label for="password" class="h4 mb-2">Password</label>
+            </div>
+            <input type="password" class="form-control" id="password" name="password"/>
+            <small class="text-danger">Password error message</small>
+        </div>
+
+        <div class="form-group">
+            <div class="label-holder text-white textCol d-flex justify-content-center">
+                <label for="confirmPassword" class="h4 mb-2">Confirm Password</label>
+            </div>
+            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"/>
+            <small class="text-danger">Password error message</small>
+        </div>
+
+        <div class="button-holder d-flex justify-content-center">
+            <button type="submit" class="btn btn-warning  mb-3" value="Register">Register</button>
+        </div>
+
+    </form>
+</main>
+<footer th:replace="fragments/commons::footer"></footer>
+</body>
+</html>
