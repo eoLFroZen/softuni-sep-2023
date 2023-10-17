@@ -1,0 +1,38 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: 'TRUE'
+    hibernate:
+      ddl-auto: update
+    open-in-view: 'false'
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: 'true'
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    password: ${db_password}
+    username: ${db_username}
+    url: jdbc:mysql://localhost:3306/planner?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
+  thymeleaf: # Thymeleaf
+    cache: false
+    mode: HTML
+    encoding: UTF-8
+    prefix: file:src/main/resources/templates/
+  resources: # Static resources
+    static-locations: file:src/main/resources/static/
+    cache:
+      period: 0
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor: TRACE
+        SQL: DEBUG
+      nodeValue: WARN
+    blog: WARN
+server:
+  port: 8080

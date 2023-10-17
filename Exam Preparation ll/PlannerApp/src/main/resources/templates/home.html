@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/commons::head"></head>
+<body>
+<header th:replace="fragments/commons::nav"></header>
+<main>
+    <div class="container-fluid bg-blur rounded mt-1 mb-4 d-flex justify-content-center" id="big-div">
+
+        <div class="col-5">
+            <h3 class=" bg-gray text-dark  mb-0 mt-2">Assigned to me</h3>
+            <h6 class=" bg-gray text-dark  mb-0 mt-0" th:text="'Username: ' + ${@loggedUser.username}"></h6>
+            <div class="bg-dark rounded m-auto" style="height: 67vh; overflow: auto">
+                <ul th:each="assignedTask : ${tasks.assignedTasks}" class="list-group list-group-horizontal text-dark">
+                    <li class="list-group-item bg-warning">
+                        <table>
+                            <tr>
+                                <td scope="row" style="width: 5%"><img class="mr-2 " src="/img/pin.png" alt="Pin"
+                                                                       width="35px" height="35px"></td>
+                                <td style="width: 15%" th:text="${assignedTask.priority}">{priority}</td>
+                                <td style="width: 40%" th:text="${assignedTask.dueDate}">{dueDate}</td>
+                                <td>
+                                    <form th:method="POST"
+                                          th:action="@{/tasks/remove/{id}(id=${assignedTask.id})}">
+                                        <button type="submit" class="custom-button">
+                                            <img src="/img/done-remove-button.png" height="35px">
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form th:method="POST"
+                                          th:action="@{/tasks/return/{id}(id=${assignedTask.id})}">
+                                        <button type="submit" class="custom-button">
+                                            <img src="/img/return.png" height="35px">
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </table>
+                    </li>
+                    <li class="list-group-item list-group-item-warning text-dark">
+                        <a th:text="${assignedTask.description}">{description}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-5">
+            <h3 class="mySticky bg-gray text-dark  mb-0 mt-2">All Available Tasks</h3>
+            <h6 class="mySticky bg-gray text-dark  mb-0 mt-0" th:text="${tasks.availableSize}">{totalUnassignedTasks}
+                Tasks</h6>
+            <div class="bg-dark rounded m-auto" style="height: 67vh; overflow: auto">
+                <ul th:each="availableTask : ${tasks.availableTasks}"
+                    class="list-group list-group-horizontal text-dark">
+                    <li class="list-group-item bg-warning">
+                        <table>
+                            <tr>
+                                <td style="width: 5%"><img class="mr-2 " src="/img/pin.png" alt="Pin" width="35px"
+                                                           height="35px"></td>
+                                <td style="width: 15%"><a th:text="${availableTask.priority}">{priority}</a></td>
+                                <td>
+                                    <a th:text="${availableTask.dueDate}">Due Date: {dueDate}</a></td>
+
+                                <td>
+                                    <form th:method="POST"
+                                          th:action="@{/tasks/assign/{id}(id=${availableTask.id})}">
+                                        <button type="submit" class="custom-button">
+                                            <img src="/img/assign-to-me-button.png" height="35px">
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </table>
+                    </li>
+                    <li class="list-group-item list-group-item-warning text-dark">
+                        <a th:text="${availableTask.description}">{description}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="fragments/commons::footer"></footer>
+</body>
+</html>
