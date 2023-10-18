@@ -1,5 +1,6 @@
 -- https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto.data-initialization.using-basic-sql-scripts
 
+USE pathfinder;
 -- user roles
 INSERT INTO roles (id, name)
 VALUES (1, 'ADMIN');
@@ -10,17 +11,17 @@ VALUES (3, 'USER');
 
 -- some test users
 INSERT INTO users (id, age, email, full_name, level, password, username)
-VALUES (1, 28, 'admin@admin.com', 'Admin Adminov', 'ADVANCED', '26dd1ba9ae974a70136ea4463046371516661b0601ca0fb83a905876ca549b3473dd524d578e241b', 'admin');
+VALUES (1, 28, 'admin@admin.com', 'Admin Adminov', 'ADVANCED', '$2a$10$zBnFYi0FpI.dBUW6cKzLAOaoHcx8FO83Ieos/zBSwGR48cN39O4WK', 'admin');
 
 INSERT INTO users (id, age, email, full_name, level, password, username)
-VALUES (2, 29, 'moderator@moderator.com', 'Moderator Moderatorov', 'INTERMEDIATE', '26dd1ba9ae974a70136ea4463046371516661b0601ca0fb83a905876ca549b3473dd524d578e241b',
+VALUES (2, 29, 'moderator@moderator.com', 'Moderator Moderatorov', 'INTERMEDIATE', '$2a$10$zBnFYi0FpI.dBUW6cKzLAOaoHcx8FO83Ieos/zBSwGR48cN39O4WK',
         'moderator');
 
 INSERT INTO users (id, age, email, full_name, level, password, username)
-VALUES (3, 30, 'user@user.com', 'User Userov', 'BEGINNER', '26dd1ba9ae974a70136ea4463046371516661b0601ca0fb83a905876ca549b3473dd524d578e241b', 'user');
+VALUES (3, 30, 'user@user.com', 'User Userov', 'BEGINNER', '$2a$10$zBnFYi0FpI.dBUW6cKzLAOaoHcx8FO83Ieos/zBSwGR48cN39O4WK', 'user');
 
 INSERT INTO users (id, age, email, full_name, level, password, username)
-VALUES (4, 33, 'ivan@ivan.com', 'Ivan Ivanov', 'BEGINNER', '26dd1ba9ae974a70136ea4463046371516661b0601ca0fb83a905876ca549b3473dd524d578e241b', 'ivan');
+VALUES (4, 33, 'ivan@ivan.com', 'Ivan Ivanov', 'BEGINNER', '$2a$10$zBnFYi0FpI.dBUW6cKzLAOaoHcx8FO83Ieos/zBSwGR48cN39O4WK', 'ivan');
 -- user roles
 -- admin
 INSERT INTO users_roles (`user_id`, `role_id`)
@@ -127,10 +128,8 @@ INSERT INTO routes_categories VALUES (4,1);
 INSERT INTO routes_categories VALUES (4,2);
 INSERT INTO routes_categories VALUES (4,3);
 INSERT INTO routes_categories VALUES (4,4);
-INSERT INTO routes_categories VALUES (5,1);
-INSERT INTO routes_categories VALUES (5,2);
-
-
+# INSERT INTO routes_categories VALUES (5,1);
+# INSERT INTO routes_categories VALUES (5,2);
 
 INSERT INTO pictures(title, url, author_id, route_id)
 VALUES ('Kumata', 'http://res.cloudinary.com/ch-cloud/image/upload/v1630581072/d47iy8kxv6qni8euhojk.jpg', 1, 1);

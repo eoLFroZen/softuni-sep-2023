@@ -1,6 +1,5 @@
 package bg.softuni.pathfinder.controller;
 
-import bg.softuni.pathfinder.model.Category;
 import bg.softuni.pathfinder.model.dto.AddRouteBindingModel;
 import bg.softuni.pathfinder.model.enums.CategoryNames;
 import bg.softuni.pathfinder.model.enums.Level;
@@ -28,7 +27,7 @@ public class RoutesController {
         modelAndView.addObject("levels", Level.values());
         modelAndView.addObject("categories", CategoryNames.values());
 
-         return modelAndView;
+        return modelAndView;
     }
 
     @PostMapping("/add")

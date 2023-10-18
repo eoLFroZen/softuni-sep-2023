@@ -54,6 +54,13 @@
                 <div class="d-flex justify-content-center mt-2">
                     <button class="btn btn-primary btn-block w-50" type="submit">Login</button>
                 </div>
+                <div class="d-flex justify-content-center mt-2" style="min-height: 1.2rem">
+                    <small th:if="${badCredentials}"
+                           th:class="'alert-danger'"
+                           th:text="'Invalid username and/or password'">
+                        error message
+                    </small>
+                </div>
             </form>
         </div>
 

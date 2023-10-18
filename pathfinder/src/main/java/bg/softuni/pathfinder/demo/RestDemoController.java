@@ -1,7 +1,6 @@
-package bg.softuni.pathfinder.controller;
+package bg.softuni.pathfinder.demo;
 
 import bg.softuni.pathfinder.model.User;
-import bg.softuni.pathfinder.service.RestDemoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +16,7 @@ public class RestDemoController {
 
     @RequestMapping(path = "/all", method = RequestMethod.GET)
 //    @GetMapping("/users/all")
-    public List<User> getAll() {
+    public String getAll() {
         return this.userService.getAll();
     }
 
