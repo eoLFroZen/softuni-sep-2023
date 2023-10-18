@@ -90,7 +90,7 @@ public class UsersController {
 
         return new ModelAndView("redirect:/");
     }
-    
+
     @GetMapping("/profile")
     public ModelAndView profile() {
         UserProfileViewModel userProfileViewModel = userService.getUserProfile();
