@@ -1,6 +1,6 @@
 package bg.softuni.pathfinder.controller;
 
-import bg.softuni.pathfinder.model.dto.AddRouteBindingModel;
+import bg.softuni.pathfinder.model.dto.binding.AddRouteBindingModel;
 import bg.softuni.pathfinder.model.enums.CategoryNames;
 import bg.softuni.pathfinder.model.enums.Level;
 import bg.softuni.pathfinder.service.RouteService;

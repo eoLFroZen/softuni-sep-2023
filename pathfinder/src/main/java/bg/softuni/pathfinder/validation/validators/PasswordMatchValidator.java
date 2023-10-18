@@ -1,6 +1,6 @@
 package bg.softuni.pathfinder.validation.validators;
 
-import bg.softuni.pathfinder.model.dto.UserRegisterBindingModel;
+import bg.softuni.pathfinder.model.dto.binding.UserRegisterBindingModel;
 import bg.softuni.pathfinder.validation.anotations.PasswordMatch;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

@@ -18,36 +18,7 @@
             crossorigin=""></script>
 </head>
 <body>
-<header>
-    <nav class="main-nav">
-        <ul>
-                <li>
-                    <a href="/">Home</a>
-                </li>
-                <li>
-                    <a href="/">Login</a>
-                </li>
-                <li>
-                    <a href="/">Register</a>
-                </li>
-                <li>
-                    <a href="/">About</a>
-                </li>
-				<li>
-                    <a href="/">Add new route</a>
-                </li>
-                <li>
-                    <a href="/">Profile</a>
-                </li>
-                <li>
-                    <a href="/">Admin</a>
-                </li>
-                <li>
-                    <a href="/">Logout</a>
-                </li>
-        </ul>
-    </nav>
-</header>
+<div th:replace="~{fragments/navigation}"></div>
 <main class="p-5 align-content-center bg-blur my-register-div">
     <div class="container mt-5">
         <div class="row d-flex justify-content-center">
@@ -55,13 +26,14 @@
                 <div class="profile-card p-3 py-4">
                     <div class="text-center"><img src="/images/profile.jpg" width="100" class="rounded-circle"></div>
                     <div class="text-center mt-3">
-                        <span class="bg-secondary p-1 px-4 rounded text-white">Pro</span>
+                        <span th:text="${userProfileViewModel.level}"
+                              class="bg-secondary p-1 px-4 rounded text-white">Pro</span>
                         <h5 class="mt-4 mb-0">Full name</h5>
-                        <span>UI/UX Designer</span>
+                        <span th:text="${userProfileViewModel.fullName}">UI/UX Designer</span>
                         <h5 class="mt-2 mb-0">Username</h5>
-                        <span>UI/UX Designer</span>
+                        <span th:text="${userProfileViewModel.username}">UI/UX Designer</span>
                         <h5 class="mt-2 mb-0">Age</h5>
-                        <span>33</span>
+                        <span th:text="${userProfileViewModel.age}">33</span>
                         <div class="px-4 mt-5">
                             <p class="fonts">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim et nostrum
                                 optio perferendis quam quod ratione rem sit soluta ut! A dolor laborum, maiores neque
@@ -74,8 +46,10 @@
                             <li><i class="fab fa-google"></i></li>
                         </ul>
                         <div class="buttons">
-                            <button class="btn btn-outline-primary px-4">Back</button>
-<!--                            <button class="btn btn-primary px-4 ms-3">Contact</button>-->
+                            <a th:href="@{/}"
+                               th:text="Back"
+                               class="btn btn-outline-primary px-4">
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -84,11 +58,5 @@
     </div>
 </main>
 </body>
-<footer class="footer bg-blur rounded">
-    <div class="container-fluid text-center">
-        <div class="h5 text-white">
-            &copy; Lucho, Chocho & Spring Advanced Students 2021. All rights reserved.
-        </div>
-    </div>
-</footer>
+<div th:replace="~{fragments/footer}"></div>
 </html>

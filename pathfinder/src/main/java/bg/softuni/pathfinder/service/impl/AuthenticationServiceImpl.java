@@ -2,8 +2,8 @@ package bg.softuni.pathfinder.service.impl;
 
 import bg.softuni.pathfinder.exceptions.LoginCredentialsException;
 import bg.softuni.pathfinder.model.User;
-import bg.softuni.pathfinder.model.dto.UserLoginBindingModel;
-import bg.softuni.pathfinder.model.dto.UserRegisterBindingModel;
+import bg.softuni.pathfinder.model.dto.binding.UserLoginBindingModel;
+import bg.softuni.pathfinder.model.dto.binding.UserRegisterBindingModel;
 import bg.softuni.pathfinder.repository.UserRepository;
 import bg.softuni.pathfinder.service.AuthenticationService;
 import bg.softuni.pathfinder.service.session.LoggedUser;

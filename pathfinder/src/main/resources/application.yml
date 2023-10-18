@@ -25,12 +25,12 @@ spring:
   #api-key:
   #api-secret:
   #cloud-name:
-#  thymeleaf: # Thymeleaf
-#    cache: false
-#    mode: HTML
-#    encoding: UTF-8
-#    prefix: file:src/main/resources/templates/
-#  resources: # Static resources
-#    static-locations: file:src/main/resources/static/
-#    cache:
-#      period: 0
+  thymeleaf: # Thymeleaf
+    cache: false
+    mode: HTML
+    encoding: UTF-8
+    prefix: file:src/main/resources/templates/
+  resources: # Static resources
+    static-locations: file:src/main/resources/static/
+    cache:
+      period: 0

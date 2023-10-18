@@ -1,4 +1,4 @@
-package bg.softuni.pathfinder.model.dto;
+package bg.softuni.pathfinder.model.dto.binding;
 
 import bg.softuni.pathfinder.validation.anotations.UniqueEmail;
 import bg.softuni.pathfinder.validation.anotations.PasswordMatch;

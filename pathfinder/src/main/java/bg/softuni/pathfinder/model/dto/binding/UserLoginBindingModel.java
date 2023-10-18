@@ -1,4 +1,4 @@
-package bg.softuni.pathfinder.model.dto;
+package bg.softuni.pathfinder.model.dto.binding;
 
 public class UserLoginBindingModel {
     private String username;
