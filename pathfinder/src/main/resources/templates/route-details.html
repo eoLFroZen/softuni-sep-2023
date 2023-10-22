@@ -19,54 +19,24 @@
 </head>
 <body>
 <div class="wrapper">
-    <header>
-    <nav class="main-nav">
-        <ul>
-                <li>
-                    <a href="/">Home</a>
-                </li>
-                <li>
-                    <a href="/">Login</a>
-                </li>
-                <li>
-                    <a href="/">Register</a>
-                </li>
-                <li>
-                    <a href="/">About</a>
-                </li>
-				<li>
-                    <a href="/">Add new route</a>
-                </li>
-                <li>
-                    <a href="/">Profile</a>
-                </li>
-                <li>
-                    <a href="/">Admin</a>
-                </li>
-                <li>
-                    <a href="/">Logout</a>
-                </li>
-        </ul>
-    </nav>
-</header>
+    <div th:replace="~{fragments/navigation}"></div>
 
-    <input type="hidden" name="routeId" id="routeId">   
+<!--    <input type="hidden" name="routeId" id="routeId" th:value="${route.id}">-->
     <div class="details-main">
         <section class="route-info text-center">
-            <h4 id="track-name"></h4>
+            <h4 th:text="${route.name}" id="track-name"></h4>
             <p>Total distance: <span id="totalDistance"></span> km</p>
-            <p>Author name: <span id="authorName"></span></p>
+            <p>Author name: <span th:text="${route.authorName}" id="authorName"></span></p>
             <h4>Difficulty Level (1-3):</h4>
             <div class="level">
-                <p><img class="level-img" src="/images/difficulty-level.png" alt=""></p>
-                <p><img class="level-img" src="/images/difficulty-level.png" alt=""></p>
-                <p><img class="level-img" src="/images/difficulty-level.png" alt=""></p>
-                
+                <p th:style="${route.level == T(bg.softuni.pathfinder.model.enums.Level).BEGINNER} ? 'visibility: visible' : 'visibility: hidden'"><img class="level-img" src="/images/difficulty-level.png" alt=""></p>
+                <p th:style="${route.level == T(bg.softuni.pathfinder.model.enums.Level).INTERMEDIATE} ? 'visibility: visible' : 'visibility: hidden'"><img class="level-img" src="/images/difficulty-level.png" alt=""></p>
+                <p th:style="${route.level == T(bg.softuni.pathfinder.model.enums.Level).ADVANCED} ? 'visibility: visible' : 'visibility: hidden'"><img class="level-img" src="/images/difficulty-level.png" alt=""></p>
             </div>
             <div>
                 <h4>Choose picture</h4>
                 <form action="/" method="POST" enctype="multipart/form-data">
-                    <input  type="hidden" id="id" name="routeId">
+                    <input type="hidden" name="routeId" id="routeId" th:value="${route.id}">
                     <div class="form-group">
                         <label>
                             <input type="text" name="title">
@@ -86,12 +56,12 @@
         </section>
         <section id="map"></section>
         <section id="video">
-            <iframe id="frame" src="https://www.youtube.com/embed/">
+            <iframe id="frame" th:src="'https://www.youtube.com/embed/' + ${route.videoUrl}">
             </iframe>
         </section>
         <section class="route-description text-center">
             <h4>Description:</h4>
-            <p id="route-description">Description: </p>
+            <p th:text="${route.description}" id="route-description">Description: </p>
         </section>
         <section class="gallery">
             <img class="rounded" src="/images/pic4.jpg" height="100%" alt="">
@@ -142,12 +112,6 @@
     <script th:src="@{/js/comments.js}"></script>
 	-->
 </div>
-<footer class="footer bg-blur rounded">
-    <div class="container-fluid text-center">
-        <div class="h5 text-white">
-            &copy; Lucho, Chocho & Spring Advanced Students 2021. All rights reserved.
-        </div>
-    </div>
-</footer>
+<div th:replace="~{fragments/footer}"></div>
 </body>
 </html>

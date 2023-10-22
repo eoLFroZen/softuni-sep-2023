@@ -55,6 +55,12 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-vault-config -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-vault-config</artifactId>
+			<version>4.0.1</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.mysql</groupId>

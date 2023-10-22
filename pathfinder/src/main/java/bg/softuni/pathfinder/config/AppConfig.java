@@ -6,6 +6,7 @@ import bg.softuni.pathfinder.model.Route;
 import bg.softuni.pathfinder.model.User;
 import bg.softuni.pathfinder.model.dto.binding.AddRouteBindingModel;
 import bg.softuni.pathfinder.model.dto.binding.UserRegisterBindingModel;
+import bg.softuni.pathfinder.model.dto.view.RouteDetailsViewModel;
 import bg.softuni.pathfinder.model.enums.CategoryNames;
 import bg.softuni.pathfinder.model.enums.Level;
 import bg.softuni.pathfinder.repository.UserRepository;
@@ -81,6 +82,12 @@ public class AppConfig {
                 .addMappings(mapper -> mapper
                         .using(passwordConverter)
                         .map(UserRegisterBindingModel::getPassword, User::setPassword));
+
+        // TODO check why mapping is not working!!!
+//        modelMapper
+//                .createTypeMap(Route.class, RouteDetailsViewModel.class)
+//                .addMappings(mapper -> mapper
+//                        .map(route -> route.getAuthor().getUsername(), RouteDetailsViewModel::setAuthorName));
 
         return modelMapper;
     }
