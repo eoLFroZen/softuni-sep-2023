@@ -20,53 +20,18 @@
 <body>
 <div class="wrapper">
     <!-- Navigation -->
-<header>
-    <nav class="main-nav">
-        <ul>
-                <li>
-                    <a href="/">Home</a>
-                </li>
-                <li>
-                    <a href="/">Login</a>
-                </li>
-                <li>
-                    <a href="/">Register</a>
-                </li>
-                <li>
-                    <a href="/">About</a>
-                </li>
-				<li>
-                    <a href="/">Add new route</a>
-                </li>
-                <li>
-                    <a href="/">Profile</a>
-                </li>
-                <li>
-                    <a href="/">Admin</a>
-                </li>
-                <li>
-                    <a href="/">Logout</a>
-                </li>
-        </ul>
-    </nav>
-</header>
+    <div th:replace="~{fragments/navigation}"></div>
 
-    <section class="road">
+    <section class="road" th:each="route:${routes}">
         <div>
-            <h2>Title</h2>
-            <p>Very long description</p>
-            <a href="/" class="btn">Learn More</a>
+            <h2 th:text="${route.title}">Title</h2>
+            <p th:text="${route.description}">Very long description</p>
+            <a th:href="@{/routes/details/{id}(id=${route.id})}" class="btn">Learn More</a>
         </div>
         <img class="rounded-circle w-75 ml-5" src="/images/pic1.jpg" alt="Title image">
     </section>
 </div>
 <!-- Wrapper Ends -->
 </body>
-<footer class="footer bg-blur rounded">
-    <div class="container-fluid text-center">
-        <div class="h5 text-white">
-            &copy; Lucho, Chocho & Spring Advanced Students 2021. All rights reserved.
-        </div>
-    </div>
-</footer>
+<div th:replace="~{fragments/footer}"></div>
 </html>

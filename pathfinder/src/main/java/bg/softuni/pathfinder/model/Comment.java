@@ -70,4 +70,12 @@ public class Comment {
     public void setAuthor(User author) {
         this.author = author;
     }
+
+    public Route getRoute() {
+        return route;
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
+    }
 }

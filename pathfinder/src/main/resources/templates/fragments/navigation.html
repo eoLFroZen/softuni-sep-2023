@@ -31,7 +31,7 @@
                 <a href="/">Admin</a>
             </li>
             <li th:if="${@loggedUser.isLogged}">
-                <form th:action="@{users/logout}" th:method="POST">
+                <form th:action="@{/users/logout}" th:method="POST">
                     <input class="mybtn" type="submit" value="Logout" />
                 </form>
 

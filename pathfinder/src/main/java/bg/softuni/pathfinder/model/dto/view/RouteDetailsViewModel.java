@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Getter
 @Setter
 @SuperBuilder
@@ -18,6 +20,8 @@ public class RouteDetailsViewModel {
     private String description;
     private String videoUrl;
     private String authorName;
+    private List<CommentViewModel> comments;
+
 
     // TODO pass coordinates;
 }

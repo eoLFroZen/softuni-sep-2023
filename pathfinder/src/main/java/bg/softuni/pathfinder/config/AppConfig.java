@@ -6,6 +6,7 @@ import bg.softuni.pathfinder.model.Route;
 import bg.softuni.pathfinder.model.User;
 import bg.softuni.pathfinder.model.dto.binding.AddRouteBindingModel;
 import bg.softuni.pathfinder.model.dto.binding.UserRegisterBindingModel;
+import bg.softuni.pathfinder.model.dto.view.RouteCategoryViewModel;
 import bg.softuni.pathfinder.model.dto.view.RouteDetailsViewModel;
 import bg.softuni.pathfinder.model.enums.CategoryNames;
 import bg.softuni.pathfinder.model.enums.Level;
@@ -13,6 +14,7 @@ import bg.softuni.pathfinder.repository.UserRepository;
 import bg.softuni.pathfinder.service.CategoryService;
 import bg.softuni.pathfinder.service.RoleService;
 import bg.softuni.pathfinder.service.session.LoggedUser;
+import bg.softuni.pathfinder.util.YoutubeUtil;
 import org.modelmapper.Conditions;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -50,6 +52,7 @@ public class AppConfig {
 
         //AddRouteBindingModel -> Route
         Provider<User> loggedUserProvider = req -> getLoggedUser();
+        Provider<String> youtubeSubUrlProvider = req -> YoutubeUtil.getUrl((String) req.getSource());
 
         Converter<Set<CategoryNames>, Set<Category>> toEntitySet
                 = ctx -> (ctx.getSource() == null)
@@ -64,7 +67,10 @@ public class AppConfig {
                 .addMappings(mapper -> mapper
                         .when(Conditions.isNull())
                         .with(loggedUserProvider)
-                        .map(AddRouteBindingModel::getAuthor, Route::setAuthor));
+                        .map(AddRouteBindingModel::getAuthor, Route::setAuthor))
+                .addMappings(mapper -> mapper
+                        .with(youtubeSubUrlProvider)
+                        .map(AddRouteBindingModel::getVideoUrl, Route::setVideoUrl));
 
         //UserRegisterBindingModel -> User
         Provider<User> newUserProvider = req -> new User()
@@ -82,6 +88,13 @@ public class AppConfig {
                 .addMappings(mapper -> mapper
                         .using(passwordConverter)
                         .map(UserRegisterBindingModel::getPassword, User::setPassword));
+
+        // RouteCategoryViewModel
+        modelMapper
+                .createTypeMap(Route.class, RouteCategoryViewModel.class)
+                .addMappings(mapper -> mapper
+                        .map(Route::getName, RouteCategoryViewModel::setTitle));
+
 
         // TODO check why mapping is not working!!!
 //        modelMapper

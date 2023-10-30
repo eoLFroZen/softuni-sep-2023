@@ -4,6 +4,7 @@ import bg.softuni.pathfinder.model.enums.Level;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -37,6 +38,9 @@ public class Route {
 
     @ManyToMany
     private Set<Category> categories;
+
+    @OneToMany(mappedBy = "route")
+    private List<Comment> comments;
 
     public Route () {
         this.categories = new HashSet<>();
@@ -120,6 +124,15 @@ public class Route {
 
     public Route setCategories (Set<Category> categories) {
         this.categories = categories;
+        return this;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public Route setComments(List<Comment> comments) {
+        this.comments = comments;
         return this;
     }
 

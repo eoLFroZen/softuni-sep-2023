@@ -43,7 +43,6 @@
                 <small id="inputNameError"
                        th:errors="*{name}"
                        class="bg-danger rounded">Name length must be more than 3 characters</small>
-
             </div>
         </div>
 
@@ -70,21 +69,24 @@
             </div>
             <div class="form-group">
                 <input type="file" name="gpxCoordinates"
+                       th:field="*{gpxCoordinates}"
                        id="inputGpx"
                        class="form-control-file"
                        aria-describedby="inputGpxError">
                 <small id="inputGpxError"
-                       class="invalid-feedback  form-text bg-danger rounded">Must be valid GPX Coordinates</small>
+                       th:errors="*{gpxCoordinates}"
+                       class="form-text bg-danger rounded">Must be valid GPX Coordinates</small>
             </div>
         </div>
         <div>
             <div class="form-group">
                 <label for="level">Level</label>
                 <select id="level" name="level" class="custom-select"
-                        th:value="${addRouteBindingModel.level}">
+                        th:field="*{level}">
                     <option value="" selected disabled>Select level</option>
                     <!--                    <option th:each="level: ${levels}" th:text="${level}" th:value="${level}" >Select level</option>-->
                     <option th:each="level : ${T(bg.softuni.pathfinder.model.enums.Level).values()}"
+                            th:value="${level}"
                             th:text="${level}">
                         Select level
                     </option>
@@ -97,6 +99,9 @@
                 <label for="videoUrl">Video Url (only last eleven characters from Youtube)</label>
                 <input id="videoUrl" th:field="*{videoUrl}" type="text"
                        class="form-control" placeholder="Video url">
+                <small id="videoUrlError"
+                       th:errors="*{videoUrl}"
+                       class="form-text bg-danger rounded"></small>
             </div>
         </div>
 
@@ -104,6 +109,7 @@
             <div class="form-group p-3">
                 <label class="p-2" for="categories">Categories:</label>
                 <input th:each="category: ${T(bg.softuni.pathfinder.model.enums.CategoryNames).values()}" class="m-3"
+                       th:field="*{categories}"
                        type="checkbox" name="categories" id="categories"
                        th:text="${#strings.toLowerCase(category)}"
                        th:value="${category}">
