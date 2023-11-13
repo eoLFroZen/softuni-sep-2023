@@ -21,7 +21,5 @@ public class RouteDetailsViewModel {
     private String videoUrl;
     private String authorName;
     private List<CommentViewModel> comments;
-
-
-    // TODO pass coordinates;
+    private List<PictureViewModel> pictures;
 }

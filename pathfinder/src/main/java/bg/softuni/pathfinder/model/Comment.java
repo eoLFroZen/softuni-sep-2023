@@ -28,7 +28,7 @@ public class Comment {
     private Route route;
 
     public Comment() {
-
+        approved = false;
     }
 
     public Long getId() {

@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
           integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
           crossorigin=""/>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
     <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
             integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
             crossorigin=""></script>
@@ -51,13 +53,23 @@
                         </label>
                         <input style="display: none" id="picture" type="file" name="picture"/>
                     </div>
-                    <div class="form-group">
+                    <div>
+                        <div>
+                            <label for="isPrimary"> Is Primary</label>
+                        </div>
+                        <div>
+                            <input id="isPrimary" type="checkbox" name="isPrimary" th:value="true">
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-2">
                         <button class="btn-primary rounded">Upload Picture</button>
                     </div>
                 </form>
             </div>
         </section>
-        <section id="map"></section>
+        <section id="map">
+        </section>
         <section id="video">
             <iframe id="frame" th:src="'https://www.youtube.com/embed/' + ${route.videoUrl}">
             </iframe>
@@ -66,20 +78,34 @@
             <h4>Description:</h4>
             <p th:text="${route.description}" id="route-description">Description: </p>
         </section>
-        <section class="gallery">
+        <section th:if="${#lists.size(route.pictures) == 0}" class="gallery">
             <img class="rounded" src="/images/pic4.jpg" height="100%" alt="">
             <img class="rounded" src="/images/pic1.jpg" height="100%" alt="">
+        </section>
+        <section th:unless="${#lists.size(route.pictures) == 0}" class="gallery">
+            <img class="rounded"
+                 th:each="picture : ${route.pictures}"
+                 th:src="${#strings.contains(picture.src, 'cloudinary') ? picture.src : '\images\' + picture.src}"
+                 th:alt="${picture.alt}"
+                 height="100%">
         </section>
 
         <section class="comments">
             <h1>Comments</h1>
-            <div class="comments">
+            <div th:unless="${#lists.size(route.comments) == 0}" class="comments">
                 <div class="form-group" th:each="comment : ${route.comments}">
                     <h4 th:text="${comment.content}">Leave a comment</h4>
-                    <label th:text="${comment.authorName}">Message</label>
+                    <label th:text="${comment.authorName == null ? 'Anonymous' : comment.authorName}">Message</label>
+                    <div>
+                        <form th:unless="${comment.approved}" th:method="PATCH" th:action="@{/comments/{id}/approve/{routeId}(id=${comment.id}, routeId=${route.id})}">
+                            <button class="btn btn-success" type="submit" th:text="'Approve'"></button>
+                        </form>
+                        <form th:method="DELETE" th:action="@{/comments/{id}/{routeId}(id=${comment.id}, routeId=${route.id})}">
+                            <button class="btn btn-danger" type="submit" th:text="'Delete'"></button>
+                        </form>
+                    </div>
                 </div>
             </div>
-
             <div>
                 <!-- Comments submission -->
                 <form id="commentForm" th:method="POST"
@@ -110,7 +136,6 @@
             </div>
 
 
-
             <!-- All comments section -->
             <div>
 
@@ -126,5 +151,56 @@
     -->
 </div>
 <div th:replace="~{fragments/footer}"></div>
+
+<script>
+    let coordinates;
+const routeId = document.getElementById('routeId').value
+let midCoordinates;
+
+fetch(`http://localhost:8080/routes/coordinates/${routeId}`)
+    .then(res => res.json())
+    .then(res => {
+        console.log(res);
+        coordinates = res;
+        midCoordinates = coordinates[Math.floor(coordinates.length / 2)]
+        console.log(midCoordinates);
+
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZ29zcG9kaW5vdmdhbGluOTYiLCJhIjoiY2xudXd0enliMGd6MjJpbnM5YnE0dGNnNCJ9.7kxRpuM2zse_V7LEAqGf-A';
+        const map = new mapboxgl.Map({
+            container: 'map',
+            // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+            style: 'mapbox://styles/mapbox/streets-v12',
+            center: midCoordinates,
+            zoom: 11
+        });
+
+        map.on('load', () => {
+            map.addSource('route', {
+                'type': 'geojson',
+                'data': {
+                    'type': 'Feature',
+                    'properties': {},
+                    'geometry': {
+                        'type': 'LineString',
+                        'coordinates': coordinates
+                    }
+                }
+            });
+            map.addLayer({
+                'id': 'route',
+                'type': 'line',
+                'source': 'route',
+                'layout': {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                'paint': {
+                    'line-color': '#888',
+                    'line-width': 8
+                }
+            });
+        });
+    })
+</script>
 </body>
 </html>

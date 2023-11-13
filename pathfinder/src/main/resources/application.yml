@@ -7,14 +7,14 @@ spring:
     profile: dev
   application:
     name: pathfinder
-  cloud:
-    vault:
-      uri: http://127.0.0.1:8200
-      token: '00000000-0000-0000-0000-000000000000'
-      kv:
-        enabled: true
-  config:
-    import: vault://
+#  cloud:
+#    vault:
+#      uri: http://127.0.0.1:8200
+#      token: '00000000-0000-0000-0000-000000000000'
+#      kv:
+#        enabled: true
+#  config:
+#    import: vault://
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: "jdbc:mysql://localhost:3306/pathfinder?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC"
@@ -52,3 +52,7 @@ spring:
       period: 0
 
 binding-result-package: org.springframework.validation.BindingResult
+
+pathfinder:
+  gpx-coordinates:
+    migrate: false

@@ -20,4 +20,6 @@ public interface RouteService {
     void uploadPicture(UploadPictureRouteBindingModel uploadPictureRouteBindingModel);
 
     List<RouteCategoryViewModel> getAllByCategory(CategoryNames categoryName);
+
+    List<List<Double>> getCoordinates(Long routeId);
 }

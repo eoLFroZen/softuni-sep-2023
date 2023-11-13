@@ -16,4 +16,6 @@ public class UploadPictureRouteBindingModel {
 
     @FileAnnotation(contentTypes = {"image/png", "image/jpeg"})
     private MultipartFile picture;
+
+    private Boolean isPrimary = false;
 }

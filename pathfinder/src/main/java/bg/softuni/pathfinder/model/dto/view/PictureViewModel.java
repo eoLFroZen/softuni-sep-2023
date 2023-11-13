@@ -7,11 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CommentViewModel {
+public class PictureViewModel {
 
-    private long id;
-    private String content;
-    private String authorName;
-    private Boolean approved;
-
+    private String src;
+    private String alt;
 }

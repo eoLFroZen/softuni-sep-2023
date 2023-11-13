@@ -3,6 +3,7 @@ package bg.softuni.pathfinder.model;
 import bg.softuni.pathfinder.model.enums.Level;
 import jakarta.persistence.*;
 
+:import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,8 +43,14 @@ public class Route {
     @OneToMany(mappedBy = "route")
     private List<Comment> comments;
 
+    @OneToMany(mappedBy = "route")
+    private List<Picture> pictures;
+
+
     public Route () {
         this.categories = new HashSet<>();
+        this.comments = new ArrayList<>();
+        this.pictures = new ArrayList<>();
     }
 
     public Long getId () {
@@ -133,6 +140,15 @@ public class Route {
 
     public Route setComments(List<Comment> comments) {
         this.comments = comments;
+        return this;
+    }
+
+    public List<Picture> getPictures() {
+        return pictures;
+    }
+
+    public Route setPictures(List<Picture> pictures) {
+        this.pictures = pictures;
         return this;
     }
 

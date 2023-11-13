@@ -22,7 +22,7 @@
     <div th:replace="~{fragments/navigation}"></div>
 
     <section th:each="route :${routes}" class="road">
-        <img th:src="${route.imageUrl}" alt="Title image">
+        <img th:src="${'images\' + route.imageUrl}" alt="Title image">
         <div>
             <h2 th:text="${route.name}">Your Route</h2>
             <p th:text="${route.description}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae alias reiciendis deleniti possimus nemo
