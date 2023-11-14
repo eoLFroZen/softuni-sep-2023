@@ -21,8 +21,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -136,21 +135,18 @@ public class RouteServiceImpl implements RouteService {
         Route route = this.routeRepository.findById(routeId)
                 .orElseThrow(() -> new RouteNotFoundException("Route not found"));
 
-        try {
-            GPX gpx = GPX.read(Path.of(BASE_GPX_COORDINATES_PATH + route.getGpxCoordinates()));
+        final String gpxCoordinates = route.getGpxCoordinates();
+
+        if (gpxCoordinates == null) {
+            return List.of(Collections.emptyList());
+        }
+
+        GPX gpx = GPX.Reader.DEFAULT.fromString(gpxCoordinates);
 
             return gpx.getTracks().get(0).getSegments().get(0).getPoints().stream()
-                    .map(point -> {
-                        List<Double> coordinates = new ArrayList<>();
-                        coordinates.add(point.getLongitude().doubleValue());
-                        coordinates.add(point.getLatitude().doubleValue());
-                        return coordinates;
-                    })
+                    .map(point -> List.of(point.getLongitude().doubleValue(),
+                                          point.getLatitude().doubleValue()))
                     .toList();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
     }
 
     private String getPicturePath(MultipartFile pictureFile, String routeName, boolean isPrimary) {
