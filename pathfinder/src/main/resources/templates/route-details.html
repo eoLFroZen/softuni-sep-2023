@@ -152,55 +152,6 @@
 </div>
 <div th:replace="~{fragments/footer}"></div>
 
-<script>
-    let coordinates;
-const routeId = document.getElementById('routeId').value
-let midCoordinates;
-
-fetch(`http://localhost:8080/routes/coordinates/${routeId}`)
-    .then(res => res.json())
-    .then(res => {
-        console.log(res);
-        coordinates = res;
-        midCoordinates = coordinates[Math.floor(coordinates.length / 2)]
-        console.log(midCoordinates);
-
-        mapboxgl.accessToken = 'pk.eyJ1IjoiZ29zcG9kaW5vdmdhbGluOTYiLCJhIjoiY2xudXd0enliMGd6MjJpbnM5YnE0dGNnNCJ9.7kxRpuM2zse_V7LEAqGf-A';
-        const map = new mapboxgl.Map({
-            container: 'map',
-            // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-            style: 'mapbox://styles/mapbox/streets-v12',
-            center: midCoordinates,
-            zoom: 11
-        });
-
-        map.on('load', () => {
-            map.addSource('route', {
-                'type': 'geojson',
-                'data': {
-                    'type': 'Feature',
-                    'properties': {},
-                    'geometry': {
-                        'type': 'LineString',
-                        'coordinates': coordinates
-                    }
-                }
-            });
-            map.addLayer({
-                'id': 'route',
-                'type': 'line',
-                'source': 'route',
-                'layout': {
-                    'line-join': 'round',
-                    'line-cap': 'round'
-                },
-                'paint': {
-                    'line-color': '#888',
-                    'line-width': 8
-                }
-            });
-        });
-    })
-</script>
+<script src="/js/map-loader.js"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@ package bg.softuni.pathfinder.model;
 import bg.softuni.pathfinder.model.enums.Level;
 import jakarta.persistence.*;
 
-:import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
