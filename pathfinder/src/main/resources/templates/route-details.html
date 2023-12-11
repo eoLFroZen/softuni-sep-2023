@@ -93,45 +93,59 @@
         <section class="comments">
             <h1>Comments</h1>
             <div th:unless="${#lists.size(route.comments) == 0}" class="comments">
-                <div class="form-group" th:each="comment : ${route.comments}">
+
+                <div th:if="${@loggedUserHelperService.isAdmin() or @loggedUserHelperService.isModerator()}"
+                     class="form-group"
+                     th:each="comment : ${route.comments}">
                     <h4 th:text="${comment.content}">Leave a comment</h4>
                     <label th:text="${comment.authorName == null ? 'Anonymous' : comment.authorName}">Message</label>
                     <div>
-                        <form th:unless="${comment.approved}" th:method="PATCH" th:action="@{/comments/{id}/approve/{routeId}(id=${comment.id}, routeId=${route.id})}">
+                        <form th:unless="${comment.approved}" th:method="PATCH"
+                              th:action="@{/comments/{id}/approve/{routeId}(id=${comment.id}, routeId=${route.id})}">
                             <button class="btn btn-success" type="submit" th:text="'Approve'"></button>
                         </form>
-                        <form th:method="DELETE" th:action="@{/comments/{id}/{routeId}(id=${comment.id}, routeId=${route.id})}">
+                        <form th:method="DELETE"
+                              th:action="@{/comments/{id}/{routeId}(id=${comment.id}, routeId=${route.id})}">
                             <button class="btn btn-danger" type="submit" th:text="'Delete'"></button>
                         </form>
+                    </div>
+                </div>
+
+                <div th:if="${@loggedUserHelperService.isOnlyUser()}"
+                     class="form-group"
+                     th:each="comment : ${route.comments}">
+                    <div th:if="${comment.approved}">
+                        <h4 th:text="${comment.content}">Leave a comment</h4>
+                        <label th:text="${comment.authorName == null ? 'Anonymous' : comment.authorName}">Message</label>
                     </div>
                 </div>
             </div>
             <div>
                 <!-- Comments submission -->
-                <form id="commentForm" th:method="POST"
-                      th:action="@{/comments/create}">
-                    <input type="hidden" name="routeId" th:value="${route.id}">
-                    <div class="form-group">
-                        <h4>Leave a comment</h4>
-                        <label for="message">Message</label>
-                        <textarea name="textContent"
-                                  id="message"
-                                  cols="30"
-                                  rows="5"
-                                  class="form-control"
-                                  style="background-color: white;"></textarea>
-                        <small id="messageError" class="invalid-feedback">
-                            Message should be at least 10 characters.
-                        </small>
-                    </div>
+                <!--                <form id="commentForm" th:method="POST"-->
+                <!--                      th:action="@{/comments/create}">-->
+                <input type="hidden" name="routeId" th:value="${route.id}">
+                <div class="form-group">
+                    <h4>Leave a comment</h4>
+                    <label for="message">Message</label>
+                    <textarea name="textContent"
+                              id="message"
+                              cols="30"
+                              rows="5"
+                              class="form-control"
+                              style="background-color: white;"></textarea>
+                    <small id="messageError" class="invalid-feedback">
+                        Message should be at least 10 characters.
+                    </small>
+                </div>
 
-                    <div class="form-group">
-                        <input type="submit"
-                               class="btn"
-                               id="postComment"
-                               value="Post Comment"/>
-                    </div>
-                </form>
+                <div class="form-group">
+                    <input type="submit"
+                           class="btn"
+                           id="postComment"
+                           value="Post Comment"/>
+                </div>
+                <!--                </form>-->
                 <!-- Comments submission -->
             </div>
 
@@ -162,7 +176,19 @@ fetch(`http://localhost:8080/routes/coordinates/${routeId}`)
     .then(res => {
         console.log(res);
         coordinates = res;
-        midCoordinates = coordinates[Math.floor(coordinates.length / 2)]
+
+        const xCoordinates = coordinates.map(xAndY => xAndY[0]);
+        const minX = Math.min(...xCoordinates);
+        const maxX = Math.max(...xCoordinates);
+
+        const yCoordinates = coordinates.map(xAndY => xAndY[1]);
+        const minY = Math.min(...yCoordinates);
+        const maxY = Math.max(...yCoordinates);
+
+        const middleX = (minX + maxX) / 2;
+        const middleY = (minY + maxY) / 2;
+
+        midCoordinates = [middleX, middleY];
         console.log(midCoordinates);
 
         mapboxgl.accessToken = 'pk.eyJ1IjoiZ29zcG9kaW5vdmdhbGluOTYiLCJhIjoiY2xudXd0enliMGd6MjJpbnM5YnE0dGNnNCJ9.7kxRpuM2zse_V7LEAqGf-A';
@@ -202,5 +228,6 @@ fetch(`http://localhost:8080/routes/coordinates/${routeId}`)
         });
     })
 </script>
+<script src="/js/comment.js"></script>
 </body>
 </html>

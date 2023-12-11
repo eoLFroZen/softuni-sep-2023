@@ -1,22 +1,19 @@
 package bg.softuni.pathfinder.config;
 
-import bg.softuni.pathfinder.exceptions.LoginCredentialsException;
 import bg.softuni.pathfinder.exceptions.RouteNotFoundException;
-import bg.softuni.pathfinder.exceptions.UserNotFoundException;
 import bg.softuni.pathfinder.model.*;
 import bg.softuni.pathfinder.model.dto.binding.AddRouteBindingModel;
 import bg.softuni.pathfinder.model.dto.binding.CreateCommentBindingModel;
 import bg.softuni.pathfinder.model.dto.binding.UserRegisterBindingModel;
 import bg.softuni.pathfinder.model.dto.view.PictureViewModel;
 import bg.softuni.pathfinder.model.dto.view.RouteCategoryViewModel;
-import bg.softuni.pathfinder.model.dto.view.RouteDetailsViewModel;
 import bg.softuni.pathfinder.model.enums.CategoryNames;
 import bg.softuni.pathfinder.model.enums.Level;
 import bg.softuni.pathfinder.repository.RouteRepository;
 import bg.softuni.pathfinder.repository.UserRepository;
 import bg.softuni.pathfinder.service.CategoryService;
 import bg.softuni.pathfinder.service.RoleService;
-import bg.softuni.pathfinder.service.session.LoggedUser;
+import bg.softuni.pathfinder.service.helpers.LoggedUserHelperService;
 import bg.softuni.pathfinder.util.YoutubeUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.Conditions;
@@ -36,7 +33,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class AppConfig {
 
-    private final LoggedUser loggedUser;
+    private final LoggedUserHelperService loggedUserHelperService;
     private final UserRepository userRepository;
     private final RouteRepository routeRepository;
     private final CategoryService categoryService;
@@ -48,7 +45,7 @@ public class AppConfig {
         final ModelMapper modelMapper = new ModelMapper();
 
         //AddRouteBindingModel -> Route
-        Provider<User> loggedUserProvider = req -> getLoggedUser();
+        Provider<User> loggedUserProvider = req -> loggedUserHelperService.get();
         Provider<String> youtubeSubUrlProvider = req -> YoutubeUtil.getUrl((String) req.getSource());
 
         Converter<Set<CategoryNames>, Set<Category>> toEntitySet
@@ -103,7 +100,7 @@ public class AppConfig {
                 throw new RouteNotFoundException("Route not found");
             }
 
-            User user = userRepository.findByUsername(loggedUser.getUsername())
+            User user = userRepository.findByUsername(loggedUserHelperService.getUsername())
                     .orElse(null);
             Route route = optionalRoute.get();
 
@@ -133,11 +130,5 @@ public class AppConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    private User getLoggedUser() {
-        final String username = loggedUser.getUsername();
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new LoginCredentialsException("User with username: " + username + " is not present"));
     }
 }

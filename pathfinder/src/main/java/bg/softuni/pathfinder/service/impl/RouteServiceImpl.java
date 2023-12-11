@@ -6,15 +6,19 @@ import bg.softuni.pathfinder.model.dto.binding.AddRouteBindingModel;
 import bg.softuni.pathfinder.model.dto.binding.UploadPictureRouteBindingModel;
 import bg.softuni.pathfinder.model.dto.view.RouteCategoryViewModel;
 import bg.softuni.pathfinder.model.dto.view.RouteDetailsViewModel;
+import bg.softuni.pathfinder.model.dto.view.RouteIndexViewModel;
 import bg.softuni.pathfinder.model.dto.view.RouteViewModel;
 import bg.softuni.pathfinder.model.enums.CategoryNames;
 import bg.softuni.pathfinder.repository.RouteRepository;
 import bg.softuni.pathfinder.service.RouteService;
+import bg.softuni.pathfinder.service.helpers.CommentHelperService;
+import bg.softuni.pathfinder.service.helpers.LoggedUserHelperService;
 import bg.softuni.pathfinder.service.helpers.PictureHelperService;
-import bg.softuni.pathfinder.service.session.LoggedUser;
 import io.jenetics.jpx.GPX;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -27,23 +31,16 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class RouteServiceImpl implements RouteService {
 
     private static final String BASE_GPX_COORDINATES_PATH = ".\\src\\main\\resources\\coordinates\\";
     private static final String BASE_IMAGES_PATH = ".\\src\\main\\resources\\static\\images\\";
     private final RouteRepository routeRepository;
     private final PictureHelperService pictureHelperService;
+    private final CommentHelperService commentHelperService;
     private final ModelMapper modelMapper;
-    private final LoggedUser loggedUser;
-
-    public RouteServiceImpl(RouteRepository routeRepository,
-                            PictureHelperService pictureHelperService, ModelMapper modelMapper,
-                            LoggedUser user) {
-        this.routeRepository = routeRepository;
-        this.pictureHelperService = pictureHelperService;
-        this.modelMapper = modelMapper;
-        this.loggedUser = user;
-    }
+    private final LoggedUserHelperService loggedUserHelperService;
 
     @Override
     public List<RouteViewModel> getAll() {
@@ -153,6 +150,20 @@ public class RouteServiceImpl implements RouteService {
         }
     }
 
+
+    @Override
+    public RouteIndexViewModel getMostCommentedRoute() {
+        Long routeId = commentHelperService.getMostCommentedRouteId();
+
+        if (routeId != null && routeId != 0) {
+            return routeRepository.findById(routeId)
+                    .map(route -> modelMapper.map(route, RouteIndexViewModel.class))
+                    .orElse(null);
+        }
+
+        return null;
+    }
+
     private String getPicturePath(MultipartFile pictureFile, String routeName, boolean isPrimary) {
         String ext = getFileExtension(pictureFile.getOriginalFilename());
 
@@ -172,7 +183,7 @@ public class RouteServiceImpl implements RouteService {
     private String getFilePath(String routeName) {
         String pathPattern = "%s\\%s_%s.xml";
         return String.format(pathPattern,
-                loggedUser.getUsername(),
+                loggedUserHelperService.getUsername(),
                 transformRouteName(routeName),
                 UUID.randomUUID());
     }

@@ -73,24 +73,50 @@
     </section>
 
     <!-- Info Section -->
-    <section class="road">
-        <img src="/images/most-commented.jpg" alt="">
-        <div>
-            <h2>The most commented route</h2>
-            <p>Read more about the most commented route and do not miss the
-                chance to visit it and give your opinion to help other users.</p>
-            <a href="/" class="btn">Learn More</a>
-        </div>
-    </section>
+    <div th:if="${mostCommentedRoute != null}">
+        <section class="road">
+            <img th:if="${mostCommentedRoute.imageUrl != null}" th:src="${'\images\' + mostCommentedRoute.imageUrl}"
+                 alt="">
+            <img th:if="${mostCommentedRoute.imageUrl == null}" src="/images/most-commented.jpg" alt="">
+            <div>
+                <h2 th:text="${mostCommentedRoute.name}">The most commented route</h2>
+                <p th:text="${mostCommentedRoute.description}">Read more about the most commented route and do not miss
+                    the
+                    chance to visit it and give your opinion to help other users.</p>
+                <a th:href="@{/routes/details/{id}(id=${mostCommentedRoute.id})}" class="btn">Learn More</a>
+            </div>
+        </section>
 
-    <!-- Portfolio -->
-    <section class="gallery">
-        <img src="http://res.cloudinary.com/ch-cloud/image/upload/v1630583467/koncyanx4gqwzt9vxgx4.jpg" width="200px"
-             height="200px" alt="">
-        <img src="http://res.cloudinary.com/ch-cloud/image/upload/v1630582448/oowojgn4lagybkvv20jb.jpg" width="200px"
-             height="200px" alt="">
-    </section>
+        <section class="gallery">
+            <img th:each="picture : ${mostCommentedRoute.pictures}"
+                 th:src="${#strings.contains(picture.src, 'cloudinary') ? picture.src : '\images\' + picture.src}"
+                 th:alt="${picture.alt}"
+                 width="200px"
+                 height="200px">
+        </section>
+    </div>
 
+    <div th:if="${mostCommentedRoute == null}">
+        <section class="road">
+            <img src="/images/most-commented.jpg" alt="">
+            <div>
+                <h2>The most commented route</h2>
+                <p>Read more about the most commented route and do not miss the
+                    chance to visit it and give your opinion to help other users.</p>
+                <a href="/" class="btn">Learn More</a>
+            </div>
+        </section>
+
+        <!-- Portfolio -->
+        <section class="gallery">
+            <img src="http://res.cloudinary.com/ch-cloud/image/upload/v1630583467/koncyanx4gqwzt9vxgx4.jpg"
+                 width="200px"
+                 height="200px" alt="">
+            <img src="http://res.cloudinary.com/ch-cloud/image/upload/v1630582448/oowojgn4lagybkvv20jb.jpg"
+                 width="200px"
+                 height="200px" alt="">
+        </section>
+    </div>
     <!-- <script th:src="@{/js/weather.js}"></script> -->
 </div>
 <!-- Wrapper Ends -->'

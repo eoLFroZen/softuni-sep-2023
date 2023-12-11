@@ -4,6 +4,7 @@ import bg.softuni.pathfinder.model.dto.binding.AddRouteBindingModel;
 import bg.softuni.pathfinder.model.dto.binding.UploadPictureRouteBindingModel;
 import bg.softuni.pathfinder.model.dto.view.RouteCategoryViewModel;
 import bg.softuni.pathfinder.model.dto.view.RouteDetailsViewModel;
+import bg.softuni.pathfinder.model.dto.view.RouteIndexViewModel;
 import bg.softuni.pathfinder.model.dto.view.RouteViewModel;
 import bg.softuni.pathfinder.model.enums.CategoryNames;
 
@@ -22,4 +23,6 @@ public interface RouteService {
     List<RouteCategoryViewModel> getAllByCategory(CategoryNames categoryName);
 
     List<List<Double>> getCoordinates(Long routeId);
+
+    RouteIndexViewModel getMostCommentedRoute();
 }
